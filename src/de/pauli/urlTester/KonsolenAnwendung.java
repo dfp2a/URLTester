@@ -6,20 +6,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class UrlTester {
+public class KonsolenAnwendung {
 
-	private URL testURL;
 
-	@SuppressWarnings("resource")
+
 	public static void main(String[] args) throws Exception {
-		UrlTester urlTester = new UrlTester();
 		Scanner scanner = new Scanner(System.in);
 		String greeting = "Wilkommen zum URL Tester", aufforderung = "Geben Sie bitte die zu Testende URL eine";
 		System.out.println(greeting);
 		System.out.println(aufforderung);
 		String eigegebeneURL = scanner.nextLine();
 
-		if (urlTester.CheckAndInitializeURL(eigegebeneURL)) {
+		if (URLTesterRunnable.CheckURL(eigegebeneURL)) {
 
 			System.out.println(
 					String.format("%s  wird überwacht, drücken Sie eine beliebige Taste um das Programm zu beenden...",
@@ -48,24 +46,8 @@ public class UrlTester {
 
 	}
 
-	public boolean CheckAndInitializeURL(String potentialURL) {
+	
 
-		boolean succes = true;
-		try {
-			setTestURL(new URL(potentialURL));
-		} catch (MalformedURLException e) {
-			succes = false;
-		}
 
-		return succes;
-	}
-
-	public URL getTestURL() {
-		return testURL;
-	}
-
-	public void setTestURL(URL testURL) {
-		this.testURL = testURL;
-	}
 
 }

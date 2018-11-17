@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class URLTesterRunnable implements Runnable {
 	private boolean running = true;
@@ -22,11 +24,11 @@ public class URLTesterRunnable implements Runnable {
 	public boolean initialise(String urlName) {
 		boolean succes = false;
 		this.urlName = urlName;
-		sdfLog = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-		sdfFile = new SimpleDateFormat("dd-MMM-yyyy HH-mm-ss");
+		sdfLog = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss",Locale.US);
+		sdfFile = new SimpleDateFormat("dd-MMM-yyyy HH-mm-ss",Locale.US);
 		try {
 			testURL = new URL(urlName);
-			filename= sdfFile.format(new Date()) + ".log";
+			filename= FormatTimeStringSecoundLevel(sdfFile.format(new Date())) + ".log";
 			File f = new File(filename);
 			fw = new FileWriter(f, true);
 			br = new BufferedWriter(fw);
@@ -52,6 +54,22 @@ public class URLTesterRunnable implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean CheckURL(String potentialURL) {
+
+		boolean succes = true;
+		try {
+			URL url = new URL(potentialURL);
+		} catch (MalformedURLException e) {
+			succes = false;
+		}
+
+		return succes;
+	}
+	
+	public static String FormatTimeStringSecoundLevel(String datestring) {
+		return datestring;
+	}
 
 	@Override
 	public void run() {
@@ -63,7 +81,7 @@ public class URLTesterRunnable implements Runnable {
 			int status = 1000;
 			if (currentdate.getTime() > olddate.getTime() + INTERVALTIME) {
 				olddate = currentdate;
-				String timestring = sdfLog.format(currentdate);
+				String timestring = FormatTimeStringSecoundLevel(sdfLog.format(currentdate));
 
 				try {
 					HttpURLConnection con = (HttpURLConnection) testURL.openConnection();
